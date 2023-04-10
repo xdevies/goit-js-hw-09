@@ -1,5 +1,6 @@
 import Notiflix from "notiflix";
 
+
 function delayPromise(delay) {
   return new Promise(resolve => {
     setTimeout(() => {
@@ -34,13 +35,19 @@ form.addEventListener('submit', event => {
     return;
   }
 
-  const promises = [];
-  for (let i = 1; i <= amount; i++) {
-    promises.push(createSinglePromise(i, delay + (i - 1) * step));
-  }
+  const promises = Array.from({ length: amount }, (_, i) =>
+    createSinglePromise(i + 1, delay + i * step)
+  );
 
-  Promise.allSettled(promises);
+  Promise.allSettled(promises)
+    .then(results => {
+      ('All promises settled:', results);
+    })
+    .catch(error => {
+      ('Error:', error);
+    });
 });
+
 
 
 
